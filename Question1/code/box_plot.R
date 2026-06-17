@@ -2,7 +2,7 @@
 #
 library(tidyverse)
 
-plot_binned_boxplot <- function(df, 
+box_plot <- function(df, 
                                 x_var, 
                                 y_var, 
                                 facet_var, 
@@ -72,7 +72,7 @@ plot_binned_boxplot <- function(df,
 }
 
 
-#plot_binned_boxplot(
+#box_plot(
 #  df         = d, 
 #  x_var      = Cost_Per_100g,   # Make sure the 'P' is capitalized if your dataset has it that way!
 #  y_var      = Rating,          # The variable for the y-axis

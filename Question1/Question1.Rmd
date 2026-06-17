@@ -32,7 +32,7 @@ Cleans and translates the map data.
 I used Claude to map all the origin regions to country names that I can use that map package.
 ```{r}
 d <- d %>%
-  origin_clean() %>%   # Cleans and translates the map data
+  origin_clean()    # Cleans and translates the map data
 ```
 
 ```{r}
@@ -41,15 +41,13 @@ coffee_value_map(d)
 
 ```
 
-```{r}
-box_plot(cofee)
-```
+
 
  I want to show how different coffee's rating changed based roast and price categories
 ```{r}
 filtered_d <- d %>% filter(roast %in% c("Medium-Light","Medium","Light"))
 
-plot_binned_boxplot(
+box_plot(
   df         = filtered_d, 
   x_var      = Cost_Per_100g,   
   y_var      = Rating,          
@@ -74,5 +72,9 @@ I added these tables to provide the entrpreneur of a finite list of options to c
 ```{r}
 export_rating_table_png(d,95, "figures/5cheap95.png")
 export_rating_table_png(d,96, "figures/5cheap96.png")
+
+# Display them in the output
+knitr::include_graphics("figures/5cheap95.png")
+knitr::include_graphics("figures/5cheap96.png")
 ```
 
