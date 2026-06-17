@@ -1,0 +1,39 @@
+---
+title: "Question2"
+author: "Martin Raubenheimer"
+date: "2026-06-17"
+output: html_document
+---
+
+
+```{r setup, include = FALSE}
+gc()
+rm(list=ls())
+list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+
+# data loading
+clean_csv_import("data/Coffee/Coffee.csv")
+```
+
+# Categorizing coffees by matching the words SU students used to describe coffee that they like to reviewer descriptions.
+```{r}
+d <- coffee_cat(Coffee, sweet_words = c("sweet", "chocolate", "cocoa", "honey", "caramel", "molasses","syrup", "vanilla", "syrupy", "butter"),
+                       fruity_words = c("fruit", "tart", "zest", "bright", "juicy", "lemon", "peach", "orange", "grapefruit", "strawberry", "blackberry", "mango", "cherry", "apricot","currant"),
+                       bold_words = c("savory", "spice", "roasted", "dark", "cedar", "tobacco", "baker", "sandalwood", "espresso"),
+                       nutty_words = c("almond", "hazelnut", "smooth", "velvety", "rich"),
+                       floral_words = c("floral", "jasmine", "lavender", "rose"))
+
+
+```
+
+```{r}
+pie_cat(d, category, 
+        title = "Taste profiles of the market",
+        subtitle = "Taste profiles are created by Maties Student Flavor Preferences",
+        fill_label = "Taste Profile")
+```
+
+```{r}
+
+```
+
