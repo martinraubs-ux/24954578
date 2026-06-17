@@ -1,4 +1,5 @@
-#global heatmap
+# Global Value for money heatmap
+#
 
 library(dplyr)
 library(tidyr)
@@ -14,6 +15,8 @@ coffee_value_map <- function(d) {
       names_to = "origin_col",
       values_to = "country"
     ) %>%
+    
+    # Remoivng unmapped and coffea from multiple countries
     filter(
       !is.na(country),
       !str_detect(country, regex("unmapped", ignore_case = TRUE)),
@@ -26,6 +29,7 @@ coffee_value_map <- function(d) {
     group_by(country) %>%
     summarise(avg_value = mean(value_ratio, na.rm = TRUE), .groups = "drop")
   
+  # fixing names for map package
   name_patch <- c(
     "USA (Hawaii)" = "USA",
     "Democratic Republic of Congo" = "Democratic Republic of the Congo",

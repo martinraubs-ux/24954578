@@ -25,7 +25,7 @@ pie_cat <- function(d, var, title, subtitle, fill_label) {
   g
 }
 
-pie_cat(d, category, 
-        title = "Taste profiles of the market",
-        subtitle = "Taste profiles are created by Maties Student Flavor Preferences",
-        fill_label = "Taste Profile")
+#pie_cat(d, category, 
+#        title = "Taste profiles of the market",
+#        subtitle = "Taste profiles are created by Maties Student Flavor Preferences",
+#       fill_label = "Taste Profile")

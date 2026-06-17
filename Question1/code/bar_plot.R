@@ -1,7 +1,7 @@
 # bar_plot
 library(tidyverse)
 
-plot_flavor_menu <- function(coffee_df,   title = "Coffee Market supply",
+bar_plot <- function(coffee_df,   title = "Coffee Market supply",
                              subtitle = "Roast levels broken down by flavour profiles",
                              xlab = "Roast Level",
                              ylab = "Number of Coffees",
@@ -36,7 +36,7 @@ plot_flavor_menu <- function(coffee_df,   title = "Coffee Market supply",
   return(menu_plot)
 }
 
-plot_flavor_menu(d)
+#bar_plot(d)
 
 
 
