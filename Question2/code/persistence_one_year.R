@@ -12,7 +12,7 @@
 
 persistence_one_year <- function(names, yr, sex, lag, top_n = 25) {
 
-    national_names <- names %>%
+    nat_names <- names %>%
         group_by(name, year, gender) %>%
         summarise(count = sum(count), .groups = "drop")
 

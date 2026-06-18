@@ -3,6 +3,15 @@ plot_persistence <- function(nat_names,
                                        lags = 1:3,
                                        top_n = 25) {
 
+    # Full national rank table for one year + gender
+    year_rank_table <- function(nat_names, yr, sex) {
+        nat_names %>%
+            filter(year == yr, gender == sex) %>%
+            arrange(desc(count)) %>%
+            mutate(rank = row_number()) %>%
+            select(name, rank)
+    }
+
     # 1. Build the combinations to iterate over
     years  <- sort(unique(nat_names$year))
     combos <- expand_grid(year = years, gender = genders, lag = lags)

@@ -30,7 +30,9 @@ abstract: |
 ```{r setup, include=FALSE}
 gc()
 rm(list =ls())
+
 library(tidyverse)
+
 Baby_Names <- read_rds("data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
     rename_with(tolower) %>%
     mutate(name = str_to_title(name), gender = toupper(gender))
@@ -40,13 +42,18 @@ Baby_Names <- read_rds("data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
 
 hbo_titles <- read_rds("data/US_Baby_names//HBO_titles.rds") %>%  rename_with(tolower) 
 
-hbo_credits <- hbo_credits %>%
+hbo_credits <- read_rds("data/US_Baby_names//HBO_credits.rds")  %>%
   mutate(across(where(is.character), ~ iconv(., to = "UTF-8", sub = "byte")))%>%
     rename_with(tolower)
+
+hbo <- left_join(hbo_credits,hbo_titles, "id") %>% 
+         select(-c(imdb_votes, tmdb_score,role, age_certification,runtime, imdb_id))
 
 charts <- read_rds("data/US_Baby_names/charts.rds") %>% 
        rename_with(~ tolower(gsub("[ -]", "_", .x))) %>%
        mutate(date = as_date(date), year = year(date))
+
+list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 
 knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
 pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse)
@@ -55,7 +62,40 @@ pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse)
 \newpage
 
 # Introduction
+
+# Persistence analysis
+```{r}
+persistence_plot <- run_persistence_analysis(Baby_Names)
+persistence_plot
+```
+
+# Popularity surges
+
 ```{r}
 
+my_static_plot <- build_pop_culture_plot(Baby_Names, charts, hbo)
+# Render it interactively
+interactive_plot <- ggplotly(my_static_plot, tooltip = "text")
+interactive_plot
+
+```
+ This plot shows the names for which the year-on-year growth has doubled.
+ An observation is coloured red if the name  doubled in a two range of the release rate of a tv show or movie and in coloured blue if the name doubled in the a two range since a artist reached there best position on the Top 100. This clearly illustrates how quickly pop culture affects Baby_Names. Looking at the left-bottom we see Zendaya is name that has grown and has played in many movies recently.
+
+
+# Density
+```{r}
+famous_names <- c("Miley", "Billie", "Drake", "Rihanna", "Mariah", "Arya", "Zendaya", "Khaleesi")
+
+fame_plot <- plot_fame_density(Baby_Names, charts, hbo, famous_names)
+
+fame_plot
+```
+
+# Genres
+```{r}
+hbo_genres_plot <- plot_hbo_genres(Baby_Names, hbo)
+
+hbo_genres_plot
 ```
 
