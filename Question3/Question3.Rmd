@@ -10,30 +10,49 @@ knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
 library(tidyverse)
 loan <- readRDS("data/Loan_Cred/loan_data.rds")
-dictionary <- readxl("data/Loan_Cred/Dictionary.xlsx")
+dictionary <- read_xlsx("data/Loan_Cred/Dictionary.xlsx")
 
 # Source functions
 
+list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 
-d <- loan_select_col("data/Loan_Cred/loan_data.rds")
+d <- loan_col_select("data/Loan_Cred/loan_data.rds")
 ```
 
-## R Markdown
+I wanted to generate a function that illustrates the differences in POD for home owners and non-home owners, and young people versus old.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+- different categories easily illustrate differences as well as different bars for home owners
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+- filtered for short-term loans
+```{r}
+emp_length_bar(d)
+```
+This graphs tells us two different stories.
+1. That home owners tend to have lower default rates than non-homers.
+2. This gap actually increases as people have been longer employed.
+The lowest default rate seems to be people who have been employed between 6 and 8 years and owns a home.
 
-```{r cars}
-summary(cars)
+```{r}
+# Plot 1: Y-axis is Interest Rate
+plot_interest <- credit_grade_y(
+  data = d, 
+  y_var = "int_rate", 
+  plot_title = "Average Interest Rate by Credit Grade",
+  plot_subtitle = "Segmented by Credit Age Profile",
+  plot_ylab = "Average Interest Rate (%)"
+)
+```
+```{r}
+
+# Plot 2: Y-axis is Defaults
+# (Assuming you created the `is_default` binary column in your master data beforehand)
+plot_defaults <- credit_grade_y(
+  data = d %>%
+    mutate(is_default = ifelse(loan_status %in% c("Charged Off", "Default"), 1, 0)), 
+  y_var = "is_default", 
+  plot_title = "Default Rate by Credit Grade",
+  plot_subtitle = "Segmented by Credit Age Profile",
+  plot_ylab = "Default Rate"
+)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -47,20 +47,20 @@ credit_grade_y <- function(data, y_var, plot_title, plot_subtitle, plot_ylab) {
 
 
 # Plot 1: Y-axis is Interest Rate
-plot_interest <- credit_grade_y(
-  data = loan_data, 
-  y_var = "int_rate", 
-  plot_title = "Average Interest Rate by Credit Grade",
-  plot_subtitle = "Segmented by Credit Age Profile",
-  plot_ylab = "Average Interest Rate (%)"
-)
-
+#plot_interest <- credit_grade_y(
+#  data = loan_data, 
+#  y_var = "int_rate", 
+#  plot_title = "Average Interest Rate by Credit Grade",
+#  plot_subtitle = "Segmented by Credit Age Profile",
+#  plot_ylab = "Average Interest Rate (%)"
+#)
+#
 # Plot 2: Y-axis is Defaults
 # (Assuming you created the `is_default` binary column in your master data beforehand)
-plot_defaults <- credit_grade_y(
-  data = loan_data %>% mutate(is_default = ifelse(loan_status %in% c("Charged Off", "Default"), 1, 0)), 
-  y_var = "is_default", 
-  plot_title = "Default Rate by Credit Grade",
-  plot_subtitle = "Segmented by Credit Age Profile",
-  plot_ylab = "Default Rate"
-)
+#plot_defaults <- credit_grade_y(
+#  data = loan_data %>% mutate(is_default = ifelse(loan_status %in% c("Charged Off", "Default"), 1, 0)), 
+#  y_var = "is_default", 
+#  plot_title = "Default Rate by Credit Grade",
+#  plot_subtitle = "Segmented by Credit Age Profile",
+#  plot_ylab = "Default Rate"
+#)
