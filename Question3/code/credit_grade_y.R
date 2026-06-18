@@ -1,48 +1,37 @@
 # credit_grade_y 
-
-# Note: y_var should be passed as a string (e.g., "int_rate" or "is_default")
 credit_grade_y <- function(data, y_var, plot_title, plot_subtitle, plot_ylab) {
   
-  # Date threshold for "young" classification (e.g., year 2000)
-  # Adjust this date cutoff depending on your business logic
-  date_threshold <- as.Date("2000-01-01") 
-  
+  # 1. Prepare the data
   plot_data <- data %>%
     mutate(
-      # Ensure earliest_cr_line is a Date object (adjust format if needed)
-      # e.g., if it's "Jan-2000", you might need myd() or parse_date_time()
-      cr_line_date = as.Date(earliest_cr_line), 
       emp_length_num = as.numeric(str_extract(emp_length, "\\d+")),
       
-      # Create secondary group: Young vs Old
-      age_group = ifelse(cr_line_date > date_threshold & emp_length_num < 5, "Young", "Old"),
+      # Cleaned up the spacing so the legend matches perfectly
+      age_group = ifelse(total_acc < 10 & emp_length_num < 5, "Young (proxy)", "Established"),
       
-      # Create a binary default column in case y_var is intended to be defaults
       is_default = ifelse(loan_status %in% c("Charged Off", "Default"), 1, 0)
     ) %>%
-    # Filter out NAs in critical columns to prevent plotting errors
     filter(!is.na(age_group), !is.na(grade), !is.na(!!sym(y_var))) %>%
     group_by(grade, age_group) %>%
-    # Calculate the mean of whatever y_var is passed in
     summarise(y_value = mean(!!sym(y_var), na.rm = TRUE), .groups = "drop")
   
-  # Generate the plot
-  ggplot(plot_data, aes(x = grade, y = y_value, fill = age_group)) +
+  # 2. Generate the plot and explicitly assign it to 'p'
+  p <- ggplot(plot_data, aes(x = grade, y = y_value, fill = age_group)) +
     geom_bar(stat = "identity", position = "dodge") +
-    scale_fill_manual(values = c("Young" = "#00BFC4", "Old" = "#F8766D")) +
+    scale_fill_manual(values = c("Young (proxy)" = "#00BFC4", "Established" = "#F8766D")) +
     labs(
       title = plot_title,
       subtitle = plot_subtitle,
       x = "Credit Grade",
       y = plot_ylab,
-      fill = "Credit Age",
-      # Explaining how "Young" was created as requested
-      caption = paste("Note: 'Young' is defined as earliest_cr_line after", 
-                      format(date_threshold, "%Y"), "and employment length < 5 years.")
+      fill = "Credit Profile",
+      caption = "Note: 'Young (proxy)' is defined as < 10 total accounts AND employment length < 5 years."
     ) +
     theme_minimal()
+  
+  # 3. Force R to output the plot
+  return(p)
 }
-
 
 
 
@@ -64,3 +53,5 @@ credit_grade_y <- function(data, y_var, plot_title, plot_subtitle, plot_ylab) {
 #  plot_subtitle = "Segmented by Credit Age Profile",
 #  plot_ylab = "Default Rate"
 #)
+
+

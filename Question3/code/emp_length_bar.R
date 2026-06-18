@@ -1,5 +1,6 @@
 # emp_length_bar
 
+
 emp_length_bar <- function(data) {
   
   # Clean and categorize the data

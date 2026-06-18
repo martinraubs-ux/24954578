@@ -2,8 +2,11 @@
 title: "Question2"
 author: "Martin Raubenheimer"
 date: "2026-06-17"
-output: html_document
+output: 
+  html_document: default
+  github_document: default
 ---
+
 
 
 ```{r setup, include = FALSE}

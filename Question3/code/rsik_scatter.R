@@ -1,33 +1,29 @@
-# risk_scatter
+# risk_density
+ 
+ risk_density <- function(data) {
+   
+   plot_data <- data %>%
+     filter(loan_status %in% c("Default", "Fully Paid"), !is.na(int_rate))
+   
+   p <- ggplot(plot_data, aes(x = int_rate, fill = loan_status)) +
+     # Density plot with 50% transparency so you can see where they overlap
+     geom_density(alpha = 0.5, color = "black") +
+     scale_fill_manual(values = c("Default" = "#c0392b", "Fully Paid" = "#7f8c8d")) +
+     labs(
+       title = "Interest Rate Distribution: Defaults vs. Paid Loans",
+       subtitle = "Defaults are heavily concentrated at the higher end of the pricing spectrum",
+       x = "Interest Rate (%)",
+       y = "Density (Volume of Loans)",
+       fill = "Loan Outcome"
+     ) +
+     # Remove the Y-axis numbers since "density" math is confusing for business audiences
+     theme_minimal() +
+     theme(
+       axis.text.y = element_blank(),
+       legend.position = "bottom"
+     )
+   
+   return(p)
+ }
 
 
-risk_scatter <- function(data) {
-  
-  # Prepare the data
-  plot_data <- data %>%
-    mutate(
-      # Create a categorical column for Default vs Non-Default
-      is_default = ifelse(loan_status %in% c("Charged Off", "Default"), "Default", "Paid/Current")
-    ) %>%
-    # Filter out NAs for the plotting variables to prevent ggplot warnings
-    filter(!is.na(avg_cur_bal), !is.na(dti), !is.na(is_default))
-  
-  # Generate the scatter plot
-  ggplot(plot_data, aes(x = dti, y = avg_cur_bal, color = is_default)) +
-    # Using alpha = 0.4 helps visualize density when points overlap
-    geom_point(alpha = 0.4, size = 1.5) + 
-    # Use distinct colors to highlight defaults (e.g., Red for Default, Grey for others)
-    scale_color_manual(values = c("Default" = "#E41A1C", "Paid/Current" = "#999999")) +
-    labs(
-      title = "Risk Profile: Average Current Balance vs. Debt-to-Income",
-      x = "Debt-to-Income Ratio (DTI)",
-      y = "Average Current Balance ($)",
-      color = "Loan Status"
-    ) +
-    # Optionally scale the Y-axis to show labels as standard numbers instead of scientific notation
-    scale_y_continuous(labels = scales::comma) +
-    theme_minimal() +
-    theme(
-      legend.position = "bottom"
-    )
-}

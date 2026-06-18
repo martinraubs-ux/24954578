@@ -49,3 +49,4 @@ short_map <- function(data) {
       hjust = 1, vjust = 0, size = 3, fill = "white", alpha = 0.8
     )
 }
+
