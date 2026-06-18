@@ -36,7 +36,7 @@ short_map <- function(data) {
   )
   
   # 3. Generate the map (using usmap package)
-  plot_usmap(data = state_summary, values = "default_rate", regions = "states") +
+  usmap::plot_usmap(data = state_summary, values = "default_rate", regions = "states") +
     scale_fill_continuous(
       low = "lightblue", high = "darkblue", 
       name = "Default Rate", label = scales::percent
