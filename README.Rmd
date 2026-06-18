@@ -5,8 +5,40 @@ date: "2026-06-18"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup1, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup2, include=FALSE}
+gc()
+rm(list =ls())
+
+library(tidyverse)
+
+Baby_Names <- read_rds("data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
+    rename_with(tolower) %>%
+    mutate(name = str_to_title(name), gender = toupper(gender))
+
+ national_names <- Baby_Names %>%  
+        group_by(name, year, gender)
+
+hbo_titles <- read_rds("data/US_Baby_names//HBO_titles.rds") %>%  rename_with(tolower) 
+
+hbo_credits <- read_rds("data/US_Baby_names//HBO_credits.rds")  %>%
+  mutate(across(where(is.character), ~ iconv(., to = "UTF-8", sub = "byte")))%>%
+    rename_with(tolower)
+
+hbo <- left_join(hbo_credits,hbo_titles, "id") %>% 
+         select(-c(imdb_votes, tmdb_score,role, age_certification,runtime, imdb_id))
+
+charts <- read_rds("data/US_Baby_names/charts.rds") %>% 
+       rename_with(~ tolower(gsub("[ -]", "_", .x))) %>%
+       mutate(date = as_date(date), year = year(date))
+
+list.files('Question2/code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse)
 ```
 
 # 24954578

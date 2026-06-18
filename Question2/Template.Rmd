@@ -32,6 +32,8 @@ gc()
 rm(list =ls())
 
 library(tidyverse)
+# Force the knit directory to be the parent directory (24954578)
+knitr::opts_knit$set(root.dir = "..")
 
 Baby_Names <- read_rds("data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
     rename_with(tolower) %>%
@@ -56,8 +58,14 @@ charts <- read_rds("data/US_Baby_names/charts.rds") %>%
 list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 
 knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+
+# Force the knit directory to be the parent directory (24954578)
+knitr::opts_knit$set(root.dir = "..")
+
 pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse)
 ```
+
+
 
 \newpage
 

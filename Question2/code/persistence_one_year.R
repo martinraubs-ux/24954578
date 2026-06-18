@@ -10,6 +10,15 @@
 # calculation. Spearman's rho on (rank_now, rank_future) then tells you how
 # well the *ordering* of today's favourites survives into the future.
 
+# Full national rank table for one year + gender
+year_rank_table <- function(nat_names, yr, sex) {
+  nat_names %>%
+    filter(year == yr, gender == sex) %>%
+    arrange(desc(count)) %>%
+    mutate(rank = row_number()) %>%
+    select(name, rank)
+}
+
 persistence_one_year <- function(names, yr, sex, lag, top_n = 25) {
 
     nat_names <- names %>%
@@ -19,14 +28,6 @@ persistence_one_year <- function(names, yr, sex, lag, top_n = 25) {
     # Ranking names function
     top_n_names <- function(nat_names, yr, sex, n = 25) {
 
-        # Full national rank table for one year + gender
-        year_rank_table <- function(nat_names, yr, sex) {
-            nat_names %>%
-                filter(year == yr, gender == sex) %>%
-                arrange(desc(count)) %>%
-                mutate(rank = row_number()) %>%
-                select(name, rank)
-        }
         year_rank_table(nat_names, yr, sex) %>% slice_head(n = n)
     }
 
