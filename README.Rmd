@@ -1,4 +1,13 @@
+---
+title: "README"
+author: "Martin Raubenheimer"
+date: "2026-06-18"
+output: github_document
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 # 24954578
  
