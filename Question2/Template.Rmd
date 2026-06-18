@@ -1,0 +1,61 @@
+---
+title: "Paged HTML Document"
+author: "NF Katzke"
+date: "November 2021"
+# date: "`r Sys.Date()`"
+bibliography: Tex/ref.bib       # Do not edit: Keep this naming convention and location.
+output:
+  pagedown::html_paged:
+    # template: wp_paged.html
+    # css: ['wp.css', 'wp-fonts.css', 'wp-page.css']
+    css: ["Template/default-fonts-Texevier.css", "Template/default-page-Texevier.css", "Template/default-Texevier.css"]
+    csl: Template/harvard-stellenbosch-university.csl # referencing format used.
+    template: ["Template/paged-Texevier.html"]
+
+    toc: true
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    self_contained: TRUE
+abstract: |
+    This is an abstract. Much can be written here. Uncomment this line to go without an abstract.
+    Abstracts have no spaces, but can have bullets.
+
+    Bullets can be created as follows
+
+    + You can add bullets, but do not add colons please.
+
+    + Line breaks are also not permitted.
+
+---
+
+```{r setup, include=FALSE}
+gc()
+rm(list =ls())
+library(tidyverse)
+Baby_Names <- read_rds("data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
+    rename_with(tolower) %>%
+    mutate(name = str_to_title(name), gender = toupper(gender))
+
+ national_names <- Baby_Names %>%  
+        group_by(name, year, gender)
+
+hbo_titles <- read_rds("data/US_Baby_names//HBO_titles.rds") %>%  rename_with(tolower) 
+
+hbo_credits <- hbo_credits %>%
+  mutate(across(where(is.character), ~ iconv(., to = "UTF-8", sub = "byte")))%>%
+    rename_with(tolower)
+
+charts <- read_rds("data/US_Baby_names/charts.rds") %>% 
+       rename_with(~ tolower(gsub("[ -]", "_", .x))) %>%
+       mutate(date = as_date(date), year = year(date))
+
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse)
+```
+
+\newpage
+
+# Introduction
+```{r}
+
+```
+
