@@ -74,6 +74,16 @@ list.files('Question3/code/', full.names = TRUE, recursive = TRUE) %>%
 loan_d <- loan_col_select("Question3/data/Loan_Cred/loan_data.rds")
 
 # QUESTION 4
+
+net_mov <- clean_csv_import("Question4/data/netflix/netflix_movies.csv")
+credits <- readRDS("Question4/data/netflix/credits.rds")
+titles <- readRDS("Question4/data/netflix/titles.rds")
+
+
+net_d <- titles %>%
+  left_join(net_mov, by = "title") %>%
+  left_join(credits, by = "id")
+
 # Source scripts from Question 4
 list.files('Question4/code/', full.names = TRUE, recursive = TRUE) %>% 
     as.list() %>% 
@@ -305,4 +315,28 @@ I just wanted to answer the director's question to whether occupation affects in
 seniority_dti_compare(loan_d)
 ```
 
+# Question  4
+## How long to people want to watch TV
+- The function filters the titles dataset to keep rows with non-missing IMDb scores and runtimes within the 7.0–10.0 range, then creates rating_band by grouping scores into 0.5-point intervals using cut().
 
+-It plots a boxplot showing runtime distribution for each rating band using ggplot2, with viridis colors for fills, a minimal theme, and hides outlier points at 40% transparency.
+```{r}
+(plot_runtime_by_rating_band(net_d, breaks = seq(7, 10, by = 0.5)))
+```
+
+## How has did preferences to gernes change over the decades
+
+```{r}
+plot_genre_decade_heatmap(titles)
+```
+
+- The function takes a dataset of titles, unpacks the genre column, filters for specific genres of interest, and categorizes them into "High rated" or "Low rated" tiers based on their imdb_score thresholds.
+
+-The function takes a dataset of titles, unpacks the genre column, filters for specific genres of interest, and categorizes them into "High rated" or "Low rated" tiers based on their imdb_score thresholds.
+
+## Which descriptions get high ratings
+```{r}
+analyze_genre_keywords(titles, c("drama", "comedy"), high_thresh = 7, low_thresh = 4, top_n = 8)
+
+```
+This function processes movie descriptions by breaking them into individual words, removing common filler words, and counting their frequencies within specific genres and rating tiers. It then generates faceted bar charts that visually compare the top words used in highly rated versus poorly rated titles.

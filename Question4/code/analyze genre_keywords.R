@@ -1,4 +1,4 @@
-
+library(tidytext)
 analyze_genre_keywords <- function(titles, genres_of_interest, high_thresh = 7,
                                    low_thresh = 4, top_n = 8) {
   long_df <- titles |>

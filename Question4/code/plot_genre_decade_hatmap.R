@@ -1,4 +1,7 @@
 # plot_genre_decade_heatmap
+
+library(scales)
+
 plot_genre_decade_heatmap <- function(titles, top_n = 12) {
   long_df <- titles |>
     explode_list_col("genres", style = "bracket") |>
@@ -22,4 +25,4 @@ plot_genre_decade_heatmap <- function(titles, top_n = 12) {
     theme_minimal(base_size = 11) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
-plot_genre_decade_heatmap(titles)
+#plot_genre_decade_heatmap(titles)

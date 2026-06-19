@@ -4,9 +4,9 @@ author: "Martin Raubenheimer"
 date: "2026-06-18"
 output: html_document
 ---
-```{r}
+```{r setup, include= FALSE}
 library(tidyverse)
-
+setwd("C:/datsci exam 1/24954578/Question4")
 source("code/clean_csv_import.R")
 net_mov <- clean_csv_import("data/netflix/netflix_movies.csv")
 credits <- readRDS("data/netflix/credits.rds")
@@ -17,19 +17,34 @@ net_d <- titles %>%
   left_join(net_mov, by = "title") %>%
   left_join(credits, by = "id")
 
+list.files('code/', full.names = TRUE, recursive = TRUE) %>% 
+    as.list() %>% 
+    walk(~source(.))
 ```
 
 ## Do people like long movies
 I was interested whether, there was clear universal preferences for length.
 It is very clear from the plot that the highest ratings go to shows that only steal an hour of someone's day/
 
-
-- The function filters the titles dataset to keep rows with non-missing IMDb scores and runtimes within the 7.0–10.0 range, then creates rating_band by grouping scores into 0.5-point intervals using cut().
-
--It plots a boxplot showing runtime distribution for each rating band using ggplot2, with viridis colors for fills, a minimal theme, and hides outlier points at 40% transparency.
 ```{r}
-plot_runtime_by_rating_band(net_d, breaks = seq(7, 10, by = 0.5))
+(plot_runtime_by_rating_band(net_d, breaks = seq(7, 10, by = 0.5)))
 
+
+```
+
+## How did different preferences for genres change over decades
+The genre documentation accounts for 100% (bright yellow square) of the share within the 1940s decade, making it the only genre represented during that period.
+```{r}
+plot_genre_decade_heatmap(titles)
+```
+
+## How does describtion affect ratings
+People generally like shows & movies that has the word school in description.
+Themes in High-Rated Titles: Words like "life", "love", "family", and "world" dominate the top descriptions for both comedy and drama, indicating that highly-rated content tends to focus on broad, relatable human experiences.
+
+The low-rated categories feature very specific names (e.g., "vijay" in comedies, "ravi" and "vijay" in dramas, along with "christmas" in comedies). This might point to highly localized or niche titles that did not resonate broadly with general audiences.
+```{r}
+analyze_genre_keywords(titles, c("drama", "comedy"), high_thresh = 7, low_thresh = 4, top_n = 8)
 
 ```
 
