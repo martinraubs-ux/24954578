@@ -5,7 +5,7 @@ library(ggplot2)
 library(tidyr)
 library(stringr)
 library(hrbrthemes)
-library(showtext)
+
 
 plot_hbo_genres <- function(baby_names_df, hbo_df,
                             growth_threshold = 1.0,

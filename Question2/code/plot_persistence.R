@@ -45,5 +45,5 @@ plot_persistence <- function(nat_names,
 
 
 # Example
-plot_persistence(national_names)
+#plot_persistence(national_names)
 

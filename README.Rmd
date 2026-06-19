@@ -12,10 +12,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r setup2, include=FALSE}
 gc()
 rm(list = ls())
-
+setwd("C:/datsci exam 1/24954578")
 .libPaths("C:/R-local-libs")
 library(hrbrthemes)
 library(tidyverse)
+library(showtext)
 
 # Force paths to look inside the Question2 folder where your data actually lives
 Baby_Names <- read_rds("Question2/data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
@@ -39,8 +40,27 @@ charts <- read_rds("Question2/data/US_Baby_names/charts.rds") %>%
        rename_with(~ tolower(gsub("[ -]", "_", .x))) %>%
        mutate(date = as_date(date), year = year(date))
 
+# Source scripts from Question 1
+list.files('Question1/code/', full.names = TRUE, recursive = TRUE) %>% 
+    as.list() %>% 
+    walk(~source(.))
+
 # Source scripts from Question 2
-list.files('Question2/code/', full.names = TRUE, recursive = TRUE) %>% 
+source("Question2/code/genres.R")
+source("Question2/code/bubble_plot.R")
+source("Question2/code/persistence_one_year.R")
+source("Question2/code/plot_fame_density.R")
+source("Question2/code/plot_persistence.R")
+#source("Question2/code/run_persistence_analysis.R")
+source("Question2/code/year_rank_table.R")
+
+# Source scripts from Question 3
+list.files('Question3/code/', full.names = TRUE, recursive = TRUE) %>% 
+    as.list() %>% 
+    walk(~source(.))
+
+# Source scripts from Question 4
+list.files('Question4/code/', full.names = TRUE, recursive = TRUE) %>% 
     as.list() %>% 
     walk(~source(.))
 
@@ -48,15 +68,32 @@ knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
 pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse)
 ```
 
+
+
+
+
+
 # Question 1
  # Categorizing coffees by matching the words SU students used to describe coffee that they like to reviewer descriptions.
 ```{r}
-d <- coffee_cat(d, sweet_words = c("sweet", "chocolate", "cocoa", "honey", "caramel", "molasses","syrup", "vanilla", "syrupy", "butter"),
+coffee <- clean_csv_import("Question1/data/Coffee.csv")
+coffee <- coffee_cat(coffee, sweet_words = c("sweet", "chocolate", "cocoa", "honey", "caramel", "molasses","syrup", "vanilla", "syrupy", "butter"),
                        fruity_words = c("fruit", "tart", "zest", "bright", "juicy", "lemon", "peach", "orange", "grapefruit", "strawberry", "blackberry", "mango", "cherry", "apricot","currant"),
                        bold_words = c("savory", "spice", "roasted", "dark", "cedar", "tobacco", "baker", "sandalwood", "espresso"),
                        nutty_words = c("almond", "hazelnut", "smooth", "velvety", "rich"),
                        floral_words = c("floral", "jasmine", "lavender", "rose"))
 
+
+
+
+
+
+source("Question3/code/credit_grade_y.R")
+source("Question3/code/emp_length_bar.R")
+source("Question3/code/risk_scatter.R")
+source("Question3/code/loan_col_select.R")
+source("Question3/code/seniority_dti_compare.R")
+source("Question3/code/short_map.R")
 
 ```
 
@@ -65,9 +102,10 @@ Cleans and translates the map data.
 I used Claude to map all the origin regions to country names that I can use that map package.
 ```{r}
 d <- d %>%
-  origin_clean()    # Cleans and translates the map data
-```
+   origin_clean()    # Cleans and translates the map data
 
+```
+Since most rating was the same I made fill average, rating per dollar
 ```{r}
 
 coffee_value_map(d)
@@ -76,7 +114,9 @@ coffee_value_map(d)
 
 
 
- I want to show how different coffee's rating changed based roast and price categories
+I want to show how different coffee's rating changed based roast and price categories.
+- So filtered for the most famous roasts and facet_wrapped on it. 
+- Cost is important , so cost is on the x axis. Cost is grouped in categories
 ```{r}
 filtered_d <- d %>% filter(roast %in% c("Medium-Light","Medium","Light"))
 
@@ -90,6 +130,8 @@ box_plot(
 ```
 
 Now that we know that that there is a lot of highly rated coffees that are very cheap, we need to find the sweet spot of quality and affordability.
+- Just a normal scatter plot with rating on the x-axis filtered for good quality ratings. 
+- 5 cheapest options displayed per rating, with cost on x-axis
 ```{r}
 scatter_price_per_rating(d,
                          ratings = 90:97,
@@ -117,13 +159,36 @@ knitr::include_graphics("figures/5cheap96.png")
 ## Introduction
 
 ## Persistence analysis
+- Combine any duplicate entries and ensure all names and genders are capitalized identically.
+- Group the data by year and gender, sorting by count to assign a rank from 1 to \(N\).
+- Pull out only the Top 25 names for each year to serve as the baseline trend group.
+- Look ahead 1, 2, or 3 years. Find where those original names sit in the future rankings. Assign a penalty rank to names that disappeared completely.
+- Use Spearman correlation to assign a metric score (\(\rho \)) to each year's endurance. Group them before and after 1990 to spot the historical shift.
 ```{r}
-run_persistence_analysis(Baby_Names)
+
+#analysis_results <- run_persistence_analysis(Baby_Names)
+
+
+#print(analysis_results$era_comparison)
+
+#print(analysis_results$plot)
+knitr::include_graphics("Question2/figures/persistence_plot.png")
 ```
 
 
 ## Popularity surges
+-I took the Billboard and HBO datasets and extracted exactly one critical year for each artist or character. For Billboard, we grouped the data by artist and extracted the earliest year they hit their absolute highest chart rank. This gave us a clean lookup table of "Pop Culture Catalysts" and the year they occurred.
 
+- I then looked at the baby names. Instead of just looking at raw numbers, the code used the lag() function to calculate the Year-over-Year (YoY) percentage growth for every single name.
+
+- If a name grew by 5% or 10%, the algorithm ignored it. 
+
+- If a name grew by >100% in a single year (and had at least 100 births to filter out statistical noise from rare names), the algorithm flagged that specific year as a "Spike."
+  
+- Finally, the code joined the baby name data with the Event Ledger. It asked a specific question: Did this detected baby-name spike happen in the exact same year, or up to two years after, the artist/character peaked in the ledger?
+
+If yes, the code assigned it a Red or Blue color.
+If no, it remained Grey.
 ```{r}
 
 my_static_plot <- build_pop_culture_plot(Baby_Names, charts, hbo)

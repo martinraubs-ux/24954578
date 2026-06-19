@@ -11,7 +11,7 @@ origin_clean <- function(d){
 # ------------------------------------------------------------------------------
 # 1.  Read data
 # ------------------------------------------------------------------------------
-d <- read.csv("data/regions.csv", stringsAsFactors = FALSE)
+d <- read.csv("Question1/data/regions.csv", stringsAsFactors = FALSE)
 
 
 # ------------------------------------------------------------------------------
@@ -927,7 +927,7 @@ if (length(unmapped) > 0) {
 # ------------------------------------------------------------------------------
 # 6.  Save enriched dataset
 # ------------------------------------------------------------------------------
-write.csv(d, "data/regions_with_countries.csv", row.names = FALSE)
+write.csv(d, "Question1/data/regions_with_countries.csv", row.names = FALSE)
 cat("\nSaved → regions_with_countries.csv\n")
 cat("Columns added: country_1, country_2\n")
 
