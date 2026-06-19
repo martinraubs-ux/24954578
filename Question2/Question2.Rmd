@@ -1,0 +1,113 @@
+---
+title: "Question2"
+author: "NF Katzke"
+date: "November 2021"
+# date: "`r Sys.Date()`"
+bibliography: Tex/ref.bib       # Do not edit: Keep this naming convention and location.
+output:
+  pagedown::html_paged:
+    # template: wp_paged.html
+    # css: ['wp.css', 'wp-fonts.css', 'wp-page.css']
+    css: ["Template/default-fonts-Texevier.css", "Template/default-page-Texevier.css", "Template/default-Texevier.css"]
+    csl: Template/harvard-stellenbosch-university.csl # referencing format used.
+    template: ["Template/paged-Texevier.html"]
+
+    toc: true
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    self_contained: TRUE
+abstract: |
+    This is an abstract. Much can be written here. Uncomment this line to go without an abstract.
+    Abstracts have no spaces, but can have bullets.
+
+    Bullets can be created as follows
+
+    + You can add bullets, but do not add colons please.
+
+    + Line breaks are also not permitted.
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
+
+# 1. SET THE TOOLBOX FIRST
+.libPaths("C:/R-local-libs")
+
+# 2. LOAD LIBRARIES (pacman will now find them locally)
+pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse, pagedown, bookdown)
+
+# 3. SET THE DESK (Absolute paths to prevent missing file errors)
+knitr::opts_knit$set(root.dir = "C:/datsci exam 1/24954578/Question2")
+setwd("C:/datsci exam 1/24954578/Question2")
+
+gc()
+rm(list =ls())
+
+# 4. LOAD DATA (Using absolute paths)
+Baby_Names <- read_rds("C:/datsci exam 1/24954578/data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
+    rename_with(tolower) %>%
+    mutate(name = str_to_title(name), gender = toupper(gender))
+
+national_names <- Baby_Names %>%  
+        group_by(name, year, gender)
+
+hbo_titles <- read_rds("C:/datsci exam 1/24954578/data/US_Baby_names/HBO_titles.rds") %>%  
+    rename_with(tolower) 
+
+hbo_credits <- read_rds("C:/datsci exam 1/24954578/data/US_Baby_names/HBO_credits.rds")  %>%
+    mutate(across(where(is.character), ~ iconv(., to = "UTF-8", sub = "byte"))) %>%
+    rename_with(tolower)
+
+hbo <- left_join(hbo_credits, hbo_titles, "id") %>% 
+         select(-c(imdb_votes, tmdb_score, role, age_certification, runtime, imdb_id))
+
+charts <- read_rds("C:/datsci exam 1/24954578/data/US_Baby_names/charts.rds") %>% 
+       rename_with(~ tolower(gsub("[ -]", "_", .x))) %>%
+       mutate(date = as_date(date), year = year(date))
+
+# 5. SOURCE SCRIPTS
+list.files("C:/datsci exam 1/24954578/Question2/code", full.names = TRUE, recursive = TRUE) %>% 
+    as.list() %>% 
+    walk(~source(.))
+```
+
+\newpage
+
+# Introduction
+
+# Persistence analysis
+```{r}
+persistence_plot <- run_persistence_analysis(Baby_Names)
+persistence_plot
+```
+
+# Popularity surges
+
+```{r}
+
+my_static_plot <- build_pop_culture_plot(Baby_Names, charts, hbo)
+# Render it interactively
+interactive_plot <- ggplotly(my_static_plot, tooltip = "text")
+interactive_plot
+
+```
+ This plot shows the names for which the year-on-year growth has doubled.
+ An observation is coloured red if the name  doubled in a two range of the release rate of a tv show or movie and in coloured blue if the name doubled in the a two range since a artist reached there best position on the Top 100. This clearly illustrates how quickly pop culture affects Baby_Names. Looking at the left-bottom we see Zendaya is name that has grown and has played in many movies recently.
+
+
+# Density
+```{r}
+famous_names <- c("Miley", "Billie", "Drake", "Rihanna", "Mariah", "Arya", "Zendaya", "Khaleesi")
+
+fame_plot <- plot_fame_density(Baby_Names, charts, hbo, famous_names)
+
+fame_plot
+```
+
+# Genres
+```{r}
+hbo_genres_plot <- plot_hbo_genres(Baby_Names, hbo)
+
+hbo_genres_plot
+```
+

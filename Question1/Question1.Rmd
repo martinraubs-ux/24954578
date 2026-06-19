@@ -1,5 +1,5 @@
 ---
-title: "Question2"
+title: "Question1"
 author: "Martin Raubenheimer"
 date: "2026-06-17"
 output: 
@@ -10,14 +10,22 @@ output:
 
 
 ```{r setup, include = FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+.libPaths("C:/R-local-libs")
+library(tidyverse)
+setwd("C:/datsci exam 1/24954578/Question1")
+
+# 3. FORCE ALL FUTURE CHUNKS TO THE MAIN FOLDER
+knitr::opts_knit$set(root.dir = "C:/datsci exam 1/24954578/Question1")
+
 gc()
 rm(list=ls())
-library(tidyverse)
-
 
 list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 
-d <- clean_csv_import("data/Coffee/Coffee.csv")
+d <- clean_csv_import("data/Coffee.csv")
 ```
 # Categorizing coffees by matching the words SU students used to describe coffee that they like to reviewer descriptions.
 ```{r}
