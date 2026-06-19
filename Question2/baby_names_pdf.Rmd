@@ -1,32 +1,16 @@
 ---
-title: "Paged HTML Document"
-author: "NF Katzke"
-date: "November 2021"
-# date: "`r Sys.Date()`"
-bibliography: Tex/ref.bib       # Do not edit: Keep this naming convention and location.
-output:
-  pagedown::html_paged:
-    # template: wp_paged.html
-    # css: ['wp.css', 'wp-fonts.css', 'wp-page.css']
-    css: ["Template/default-fonts-Texevier.css", "Template/default-page-Texevier.css", "Template/default-Texevier.css"]
-    csl: Template/harvard-stellenbosch-university.csl # referencing format used.
-    template: ["Template/paged-Texevier.html"]
-
-    toc: true
-    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
-    self_contained: TRUE
-abstract: |
-    This is an abstract. Much can be written here. Uncomment this line to go without an abstract.
-    Abstracts have no spaces, but can have bullets.
-
-    Bullets can be created as follows
-
-    + You can add bullets, but do not add colons please.
-
-    + Line breaks are also not permitted.
-
+title: "baby_names_pdf"
+output: pdf_document
+date: "2026-06-19"
 ---
+
+
+
+
 ```{r setup, include=FALSE}
+gc()
+rm(list =ls())
+
 knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
 
 # 1. SET THE TOOLBOX FIRST
@@ -37,8 +21,6 @@ pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse, pagedown, bookdow
 knitr::opts_knit$set(root.dir = "C:/datsci exam 1/24954578/Question2")
 setwd("C:/datsci exam 1/24954578/Question2")
 
-gc()
-rm(list =ls())
 
 # 3. LOAD DATA USING CLEAN RELATIVE PATHS
 Baby_Names <- read_rds("data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
@@ -69,6 +51,7 @@ list.files("code/", full.names = TRUE, recursive = TRUE) %>%
 
 
 ```
+
 \newpage
 
 # Introduction

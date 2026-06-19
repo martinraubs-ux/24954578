@@ -2,7 +2,7 @@
 
 library(dplyr)
 library(ggplot2)
-library(plotly)
+#library(plotly)
 
 build_pop_culture_plot <- function(baby_names_df, chart_df, hbo_df,
                                    growth_threshold = 1.0,
@@ -100,9 +100,9 @@ build_pop_culture_plot <- function(baby_names_df, chart_df, hbo_df,
 }
 
 # Generate the plot object
-my_static_plot <- build_pop_culture_plot(Baby_Names, charts, hbo)
+#my_static_plot <- build_pop_culture_plot(Baby_Names, charts, hbo)
 
 # Render it interactively, pointing the tooltip specifically to our custom text
-interactive_plot <- ggplotly(my_static_plot, tooltip = "text")
+#interactive_plot <- ggplotly(my_static_plot, tooltip = "text")
 
-interactive_plot
+#interactive_plot

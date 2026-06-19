@@ -11,31 +11,38 @@ knitr::opts_chunk$set(echo = TRUE)
 # 24954578
 ```{r setup2, include=FALSE}
 gc()
-rm(list =ls())
+rm(list = ls())
 
+.libPaths("C:/R-local-libs")
+library(hrbrthemes)
 library(tidyverse)
 
-Baby_Names <- read_rds("data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
+# Force paths to look inside the Question2 folder where your data actually lives
+Baby_Names <- read_rds("Question2/data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
     rename_with(tolower) %>%
     mutate(name = str_to_title(name), gender = toupper(gender))
 
- national_names <- Baby_Names %>%  
+national_names <- Baby_Names %>%  
         group_by(name, year, gender)
 
-hbo_titles <- read_rds("data/US_Baby_names//HBO_titles.rds") %>%  rename_with(tolower) 
+hbo_titles <- read_rds("Question2/data/US_Baby_names/HBO_titles.rds") %>% 
+    rename_with(tolower) 
 
-hbo_credits <- read_rds("data/US_Baby_names//HBO_credits.rds")  %>%
-  mutate(across(where(is.character), ~ iconv(., to = "UTF-8", sub = "byte")))%>%
+hbo_credits <- read_rds("Question2/data/US_Baby_names/HBO_credits.rds") %>%
+    mutate(across(where(is.character), ~ iconv(., to = "UTF-8", sub = "byte"))) %>%
     rename_with(tolower)
 
-hbo <- left_join(hbo_credits,hbo_titles, "id") %>% 
-         select(-c(imdb_votes, tmdb_score,role, age_certification,runtime, imdb_id))
+hbo <- left_join(hbo_credits, hbo_titles, "id") %>% 
+         select(-c(imdb_votes, tmdb_score, role, age_certification, runtime, imdb_id))
 
-charts <- read_rds("data/US_Baby_names/charts.rds") %>% 
+charts <- read_rds("Question2/data/US_Baby_names/charts.rds") %>% 
        rename_with(~ tolower(gsub("[ -]", "_", .x))) %>%
        mutate(date = as_date(date), year = year(date))
 
-list.files('Question2/code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+# Source scripts from Question 2
+list.files('Question2/code/', full.names = TRUE, recursive = TRUE) %>% 
+    as.list() %>% 
+    walk(~source(.))
 
 knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
 pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse)
@@ -120,9 +127,7 @@ run_persistence_analysis(Baby_Names)
 ```{r}
 
 my_static_plot <- build_pop_culture_plot(Baby_Names, charts, hbo)
-# Render it interactively
-interactive_plot <- ggplotly(my_static_plot, tooltip = "text")
-interactive_plot
+
 
 ```
 
