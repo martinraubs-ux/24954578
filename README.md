@@ -93,7 +93,7 @@ options to choose from.
 
     ## [1] "figures/5cheap96.png"
 
-![](figures/5cheap95.png)<!-- -->![](figures/5cheap96.png)<!-- -->
+<img src="figures/5cheap95.png" alt="" width="1902" /><img src="figures/5cheap96.png" alt="" width="1963" />
 
 # Question 2
 
@@ -112,7 +112,8 @@ options to choose from.
   completely.
 - Use Spearman correlation to assign a metric score ($\rho$) to each
   year’s endurance. Group them before and after 1990 to spot the
-  historical shift. ![](Question2/figures/persistence_plot.png)<!-- -->
+  historical shift.
+  <img src="Question2/figures/persistence_plot.png" alt="" width="630" />
 
 ## Popularity surges
 
@@ -138,7 +139,9 @@ Culture Catalysts” and the year they occurred.
   peaked in the ledger?
 
 If yes, the code assigned it a Red or Blue color. If no, it remained
-Grey. ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+Grey. NOTE: This was supposed to be an interactive plot, but plotly gave
+my computer some sisues knitting.
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 -I took the Billboard and HBO datasets and extracted exactly one
 critical year for each artist or character. For Billboard, we grouped
@@ -222,3 +225,56 @@ affects interest rates. - I made DTI categorical for facet_wrap - made a
 dictionary for high level management positions and split the data based
 on that using emp_title -Plotted the interest rate on y axis
 ![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+# Question 4
+
+## How long to people want to watch TV
+
+- The function filters the titles dataset to keep rows with non-missing
+  IMDb scores and runtimes within the 7.0–10.0 range, then creates
+  rating_band by grouping scores into 0.5-point intervals using cut().
+
+-It plots a boxplot showing runtime distribution for each rating band
+using ggplot2, with viridis colors for fills, a minimal theme, and hides
+outlier points at 40% transparency.
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+## How has did preferences to gernes change over the decades
+
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+- The function takes a dataset of titles, unpacks the genre column,
+  filters for specific genres of interest, and categorizes them into
+  “High rated” or “Low rated” tiers based on their imdb_score
+  thresholds.
+
+-The function takes a dataset of titles, unpacks the genre column,
+filters for specific genres of interest, and categorizes them into “High
+rated” or “Low rated” tiers based on their imdb_score thresholds.
+
+## Which descriptions get high ratings
+
+    ## $table
+    ## # A tibble: 32 × 4
+    ##    genre  tier       word        n
+    ##    <chr>  <chr>      <chr>   <int>
+    ##  1 comedy High rated life      144
+    ##  2 comedy High rated love       88
+    ##  3 comedy High rated comedy     82
+    ##  4 comedy High rated family     82
+    ##  5 comedy High rated world      82
+    ##  6 comedy High rated special    75
+    ##  7 comedy High rated school     68
+    ##  8 comedy High rated series     68
+    ##  9 comedy Low rated  family     16
+    ## 10 comedy Low rated  friends    13
+    ## # ℹ 22 more rows
+    ## 
+    ## $plot
+
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- --> This
+function processes movie descriptions by breaking them into individual
+words, removing common filler words, and counting their frequencies
+within specific genres and rating tiers. It then generates faceted bar
+charts that visually compare the top words used in highly rated versus
+poorly rated titles.

@@ -13,15 +13,16 @@ knitr::opts_chunk$set(echo = TRUE)
 gc()
 rm(list = ls())
 setwd("C:/datsci exam 1/24954578")
-
-.libPaths("C:/Users/24954578/AppData/Local/R/win-library/4.5/usmap")
-.libPaths("C:/R-local-libs")
+# Safely add your custom paths while keeping the default R library paths
+.libPaths(c("C:/Users/24954578/AppData/Local/R/win-library/4.5/usmap", 
+            "C:/R-local-libs", 
+            .libPaths()))
 
 library(hrbrthemes)
 library(tidyverse)
 library(showtext)
 library(readxl)
-
+library(tidytext) # Now it will be found in your default library path
 
 
 # Force paths to look inside the Question2 folder where your data actually lives
