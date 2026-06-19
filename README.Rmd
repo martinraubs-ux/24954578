@@ -13,10 +13,16 @@ knitr::opts_chunk$set(echo = TRUE)
 gc()
 rm(list = ls())
 setwd("C:/datsci exam 1/24954578")
+
+.libPaths("C:/Users/24954578/AppData/Local/R/win-library/4.5/usmap")
 .libPaths("C:/R-local-libs")
+
 library(hrbrthemes)
 library(tidyverse)
 library(showtext)
+library(readxl)
+
+
 
 # Force paths to look inside the Question2 folder where your data actually lives
 Baby_Names <- read_rds("Question2/data/US_Baby_names/Baby_Names_By_US_State.rds") %>%
@@ -54,11 +60,20 @@ source("Question2/code/plot_persistence.R")
 #source("Question2/code/run_persistence_analysis.R")
 source("Question2/code/year_rank_table.R")
 
+
+# QUESTION 3
+
+loan <- readRDS("Question3/data/Loan_Cred/loan_data.rds")
+dictionary <- read_xlsx("Question3/data/Loan_Cred/Dictionary.xlsx")
+
 # Source scripts from Question 3
 list.files('Question3/code/', full.names = TRUE, recursive = TRUE) %>% 
     as.list() %>% 
     walk(~source(.))
 
+loan_d <- loan_col_select("Question3/data/Loan_Cred/loan_data.rds")
+
+# QUESTION 4
 # Source scripts from Question 4
 list.files('Question4/code/', full.names = TRUE, recursive = TRUE) %>% 
     as.list() %>% 
@@ -74,7 +89,12 @@ pacman::p_load(modelsummary, gt, knitr, kableExtra, tidyverse)
 
 
 # Question 1
- # Categorizing coffees by matching the words SU students used to describe coffee that they like to reviewer descriptions.
+ Categorizing coffees by matching the words SU students used to describe coffee that they like to reviewer descriptions.
+- The function sets up five default lists of coffee flavor words and collapses them into regular expression search strings using the | operator.
+- It merges three separate description columns into a unified text field using unite() and converts the entire text to lowercase using str_to_lower().
+- The str_count() function calculates the total number of times category-specific keywords appear within each coffee's combined text.
+- It looks row-by-row to find the highest flavor score and uses case_when() to assign a label based on that dominant trait.
+
 ```{r}
 coffee <- clean_csv_import("Question1/data/Coffee.csv")
 coffee <- coffee_cat(coffee, sweet_words = c("sweet", "chocolate", "cocoa", "honey", "caramel", "molasses","syrup", "vanilla", "syrupy", "butter"),
@@ -84,22 +104,11 @@ coffee <- coffee_cat(coffee, sweet_words = c("sweet", "chocolate", "cocoa", "hon
                        floral_words = c("floral", "jasmine", "lavender", "rose"))
 
 
-
-
-
-
-source("Question3/code/credit_grade_y.R")
-source("Question3/code/emp_length_bar.R")
-source("Question3/code/risk_scatter.R")
-source("Question3/code/loan_col_select.R")
-source("Question3/code/seniority_dti_compare.R")
-source("Question3/code/short_map.R")
-
 ```
 
 
 Cleans and translates the map data.
-I used Claude to map all the origin regions to country names that I can use that map package.
+I used Claude to create a lookup table for origin regions and country names that I can use that map package.
 ```{r}
 d <- d %>%
    origin_clean()    # Cleans and translates the map data
@@ -188,11 +197,12 @@ knitr::include_graphics("Question2/figures/persistence_plot.png")
 - Finally, the code joined the baby name data with the Event Ledger. It asked a specific question: Did this detected baby-name spike happen in the exact same year, or up to two years after, the artist/character peaked in the ledger?
 
 If yes, the code assigned it a Red or Blue color.
-If no, it remained Grey.
+If no, it remained Grey. 
+NOTE: This was supposed to be an interactive plot, but plotly gave my computer some sisues knitting.
 ```{r}
 
 my_static_plot <- build_pop_culture_plot(Baby_Names, charts, hbo)
-
+my_static_plot
 
 ```
 
@@ -226,4 +236,73 @@ hbo_genres_plot
 ```
 
 # Question 3
+## Home-owner v non Home owner
+I wanted to generate a function that illustrates the differences in POD for home owners and non-home owners, and young people versus old.
+
+- different categories easily illustrate differences as well as different bars for home owners
+
+- filtered for short-term loans
+```{r}
+emp_length_bar(loan_d)
+```
+
+
+## State level
+I like maps. Wanted to show how states differ so after the default rate is calculated, "usmap" package installed, I only have to set transparency by default rate. Default rates and DTI is calculated by using summarise after grouped_by states
+
+Hard numbers give a clear view so I added the tables of the states with the 5 lowest and highest default rates and added there respective average DTI's.
+```{r}
+short_map(loan_d)
+```
+
+
+## Credit grades
+I want to test the reliability of grades as indicators of defaults for young people
+
+- since there is no age column I had to make a proxy limiting the sample to total_acc < 10 and emp_length < 5.
+- I made the y variable and input so that I can also learns something about interest rates
+```{r}
+# Plot 1: Y-axis is Interest Rate
+plot_interest <- credit_grade_y(
+  data = loan_d, 
+  y_var = "int_rate", 
+  plot_title = "Average Interest Rate by Credit Grade",
+  plot_subtitle = "Segmented by Credit Age Profile",
+  plot_ylab = "Average Interest Rate (%)"
+)
+plot_interest
+```
+```{r}
+
+# Plot 2: Y-axis is Defaults
+# (Assuming you created the `is_default` binary column in your master data beforehand)
+plot_defaults <- credit_grade_y(
+  data = loan_d %>%
+    mutate(is_default = ifelse(loan_status %in% c("Charged Off", "Default"), 1, 0)), 
+  y_var = "is_default", 
+  plot_title = "Default Rate by Credit Grade",
+  plot_subtitle = "Segmented by Credit Age Profile",
+  plot_ylab = "Default Rate"
+)
+plot_defaults
+
+```
+
+
+## Interest rates & Defaults
+I wanted to visualise the difference between defaulted and paid loans by interest rate, so I plotted the densities with interest rate on the x-axis and fill with loan_status to visualise the difference
+```{r}
+risk_density(loan_d)
+```
+
+
+## Does occupation names affect interest rates?
+I just wanted to answer the director's question to whether occupation affects interest rates.
+- I made DTI categorical for facet_wrap
+- made a dictionary for high level management positions and split the data based on that using emp_title
+-Plotted the interest rate on y axis 
+```{r}
+seniority_dti_compare(loan_d)
+```
+
 

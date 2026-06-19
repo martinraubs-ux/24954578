@@ -93,7 +93,7 @@ build_pop_culture_plot <- function(baby_names_df, chart_df, hbo_df,
             panel.grid.minor = element_blank(),
             legend.position = "right",
             plot.title = element_text(face = "bold", size = 16),
-            axis.text.x = element_text(face = "bold", angle = 45, hjust = 1)
+            axis.text.x = element_text(face = "bold", angle = 90, hjust = 1,size=6)
         )
 
     return(p)
@@ -101,7 +101,7 @@ build_pop_culture_plot <- function(baby_names_df, chart_df, hbo_df,
 
 # Generate the plot object
 #my_static_plot <- build_pop_culture_plot(Baby_Names, charts, hbo)
-
+#my_static_plot
 # Render it interactively, pointing the tooltip specifically to our custom text
 #interactive_plot <- ggplotly(my_static_plot, tooltip = "text")
 

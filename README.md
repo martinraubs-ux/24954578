@@ -7,11 +7,20 @@ Martin Raubenheimer
 
 # Question 1
 
-\# Categorizing coffees by matching the words SU students used to
-describe coffee that they like to reviewer descriptions.
+Categorizing coffees by matching the words SU students used to describe
+coffee that they like to reviewer descriptions. - The function sets up
+five default lists of coffee flavor words and collapses them into
+regular expression search strings using the \| operator. - It merges
+three separate description columns into a unified text field using
+unite() and converts the entire text to lowercase using
+str_to_lower(). - The str_count() function calculates the total number
+of times category-specific keywords appear within each coffee’s combined
+text. - It looks row-by-row to find the highest flavor score and uses
+case_when() to assign a label based on that dominant trait.
 
-Cleans and translates the map data. I used Claude to map all the origin
-regions to country names that I can use that map package.
+Cleans and translates the map data. I used Claude to create a lookup
+table for origin regions and country names that I can use that map
+package.
 
     ## ⚠️  Unmapped values (extend region_to_country to fix):
     ##  - UNMAPPED: Kahale
@@ -129,7 +138,7 @@ Culture Catalysts” and the year they occurred.
   peaked in the ledger?
 
 If yes, the code assigned it a Red or Blue color. If no, it remained
-Grey.
+Grey. ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 -I took the Billboard and HBO datasets and extracted exactly one
 critical year for each artist or character. For Billboard, we grouped
@@ -163,3 +172,53 @@ Grey.
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 # Question 3
+
+## Home-owner v non Home owner
+
+I wanted to generate a function that illustrates the differences in POD
+for home owners and non-home owners, and young people versus old.
+
+- different categories easily illustrate differences as well as
+  different bars for home owners
+
+- filtered for short-term loans
+  ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+## State level
+
+I like maps. Wanted to show how states differ so after the default rate
+is calculated, “usmap” package installed, I only have to set
+transparency by default rate. Default rates and DTI is calculated by
+using summarise after grouped_by states
+
+Hard numbers give a clear view so I added the tables of the states with
+the 5 lowest and highest default rates and added there respective
+average DTI’s.
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+## Credit grades
+
+I want to test the reliability of grades as indicators of defaults for
+young people
+
+- since there is no age column I had to make a proxy limiting the sample
+  to total_acc \< 10 and emp_length \< 5.
+- I made the y variable and input so that I can also learns something
+  about interest rates
+  ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+  ![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+## Interest rates & Defaults
+
+I wanted to visualise the difference between defaulted and paid loans by
+interest rate, so I plotted the densities with interest rate on the
+x-axis and fill with loan_status to visualise the difference
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+## Does occupation names affect interest rates?
+
+I just wanted to answer the director’s question to whether occupation
+affects interest rates. - I made DTI categorical for facet_wrap - made a
+dictionary for high level management positions and split the data based
+on that using emp_title -Plotted the interest rate on y axis
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->

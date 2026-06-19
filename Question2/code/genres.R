@@ -11,9 +11,9 @@ plot_hbo_genres <- function(baby_names_df, hbo_df,
                             growth_threshold = 1.0,
                             min_n_threshold = 100) {
 
-
-    font_add_google("Quicksand", "quicksand")
-    showtext_auto()
+  #library(showtext)
+  #  font_add_google("Quicksand", "quicksand")
+   # showtext_auto()
 
     # 1. Clean and unnest the genre lists
     hbo_ref <- hbo_df %>%
@@ -94,7 +94,7 @@ plot_hbo_genres <- function(baby_names_df, hbo_df,
         )
 
     p + theme_ipsum(
-        base_family = "quicksand", # Or "Helvetica", "Roboto"
+        base_family = "Arial", # Or "Helvetica", "Roboto"
         grid = "Y",                   # Only show horizontal gridlines for bar charts
         plot_title_size = 18,
         subtitle_size = 13,

@@ -1,10 +1,8 @@
 ---
 title: "baby_names_pdf"
-output: pdf_document
+output: html_document
 date: "2026-06-19"
 ---
-
-
 
 
 ```{r setup, include=FALSE}
@@ -55,13 +53,14 @@ list.files("code/", full.names = TRUE, recursive = TRUE) %>%
 \newpage
 
 # Introduction
+This report analyzes historical trends, pop-culture shocks, and media genre influences within national baby-naming datasets to inform long-term inventory forecasting and intellectual property licensing strategies. By tracking how fast name trends persist, peak, and decay across different entertainment channels, this analysis establishes a data-driven framework for timing product lifecycles and optimizing personalized toy lines.
 
 # Persistence analysis
 ```{r}
 persistence_plot <- run_persistence_analysis(Baby_Names)
 persistence_plot
 ```
-
+The chart shows that girls' names dropped much faster in persistence post-1990 than boys' names. A toy brand relying on the same names for girls' products year-over-year faces a higher risk of sounding outdated.
 # Popularity surges
 
 ```{r}
@@ -81,6 +80,11 @@ fame_plot <- plot_fame_density(Baby_Names, charts, hbo, famous_names)
 
 fame_plot
 ```
+The "Flash-in-the-Pan" Risk (Arya, Khaleesi, Miley): These names show sharp, vertical spikes with almost zero historical runway. They represent intense, immediate demand that risks leaving you with dead inventory if you over-manufacture customized toys past the peak of the media hype.
+
+The "Sustained Icon" Value (Billie, Drake, Rihanna): The red dashed lines highlight that these names were already rising or heavily established before their massive pop-culture breakout. These trends have a smoother decay curve, making them safer, longer-term investments for personalized products.
+
+The "Leading Indicator" Opportunity (Zendaya): The name spikes exactly at the red line, signaling a highly concentrated generation of children with this name hitting your target toddler-to-youth toy market simultaneously.
 
 # Genres
 ```{r}
@@ -89,4 +93,9 @@ hbo_genres_plot <- plot_hbo_genres(Baby_Names, hbo)
 hbo_genres_plot
 ```
 
+High-Yield Toy Lines (Drama & Comedy): Shows categorized under Drama (27 spikes) and Comedy (20 spikes) are your most fertile ground for long-term IP licensing. Characters in these genres successfully capture deep consumer attachment, driving parents to name their children after them.
 
+Low-Yield Genre Risks (Family, Sci-Fi, Fantasy): Surprisingly, traditional toy-driving genres like Family (2) and Fantasy (7) trigger fewer historical baby name spikes here. This suggests that while these genres sell toys immediately, they don't always inspire the lifelong emotional investment required to influence a child's legal name.
+
+# Conclusion
+We see that pop culture has a massive influence on baby names. Very popular name these days are Arya, Khaleesi(from Game of thrones) or Zendaya. It is also noted that name persistence has decreased post 1990s. This means that toy manufactures should not sign as big contracts relative to population size compared to before the 1990s

@@ -23,7 +23,7 @@ dictionary <- read_xlsx("data/Loan_Cred/Dictionary.xlsx")
 
 list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 
-d <- loan_col_select("data/Loan_Cred/loan_data.rds")
+loan_d <- loan_col_select("data/Loan_Cred/loan_data.rds")
 ```
 
 I wanted to generate a function that illustrates the differences in POD for home owners and non-home owners, and young people versus old.

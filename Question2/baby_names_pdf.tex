@@ -1,0 +1,194 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={baby\_names\_pdf},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{baby\_names\_pdf}
+\author{}
+\date{\vspace{-2.5em}2026-06-19}
+
+\begin{document}
+\maketitle
+
+\newpage
+
+\section{Introduction}\label{introduction}
+
+This report analyzes historical trends, pop-culture shocks, and media
+genre influences within national baby-naming datasets to inform
+long-term inventory forecasting and intellectual property licensing
+strategies. F By tracking how fast name trends persist, peak, and decay
+across different entertainment channels, this analysis establishes a
+data-driven framework for timing product lifecycles and optimizing
+personalized toy lines.
+
+\section{Persistence analysis}\label{persistence-analysis}
+
+\begin{verbatim}
+## $timeseries
+## # A tibble: 618 x 4
+##     year gender   lag   rho
+##    <dbl> <chr>  <int> <dbl>
+##  1  1910 F          1 0.979
+##  2  1910 F          2 0.951
+##  3  1910 F          3 0.942
+##  4  1910 M          1 0.975
+##  5  1910 M          2 0.922
+##  6  1910 M          3 0.925
+##  7  1911 F          1 0.975
+##  8  1911 F          2 0.933
+##  9  1911 F          3 0.915
+## 10  1911 M          1 0.955
+## # i 608 more rows
+## 
+## $plot
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{baby_names_pdf_files/figure-latex/unnamed-chunk-1-1.pdf}}
+
+\begin{verbatim}
+## 
+## $era_comparison
+## # A tibble: 6 x 5
+##   gender   lag from_1990 pre_1990 drop_in_persistence
+##   <chr>  <int>     <dbl>    <dbl>               <dbl>
+## 1 F          1     0.937    0.952              0.0143
+## 2 F          2     0.868    0.900              0.0318
+## 3 F          3     0.815    0.853              0.0379
+## 4 M          1     0.950    0.981              0.0306
+## 5 M          2     0.891    0.958              0.0669
+## 6 M          3     0.836    0.934              0.0981
+\end{verbatim}
+
+The chart shows that girls' names dropped much faster in persistence
+post-1990 than boys' names. A toy brand relying on the same names for
+girls' products year-over-year faces a higher risk of sounding outdated.
+\# Popularity surges
+
+This plot shows the names for which the year-on-year growth has doubled.
+An observation is coloured red if the name doubled in a two range of the
+release rate of a tv show or movie and in coloured blue if the name
+doubled in the a two range since a artist reached there best position on
+the Top 100. This clearly illustrates how quickly pop culture affects
+Baby\_Names. Looking at the left-bottom we see Zendaya is name that has
+grown and has played in many movies recently.
+
+\section{Density}\label{density}
+
+\pandocbounded{\includegraphics[keepaspectratio]{baby_names_pdf_files/figure-latex/unnamed-chunk-3-1.pdf}}
+The ``Flash-in-the-Pan'' Risk (Arya, Khaleesi, Miley): These names show
+sharp, vertical spikes with almost zero historical runway. They
+represent intense, immediate demand that risks leaving you with dead
+inventory if you over-manufacture customized toys past the peak of the
+media hype.
+
+The ``Sustained Icon'' Value (Billie, Drake, Rihanna): The red dashed
+lines highlight that these names were already rising or heavily
+established before their massive pop-culture breakout. These trends have
+a smoother decay curve, making them safer, longer-term investments for
+personalized products.
+
+The ``Leading Indicator'' Opportunity (Zendaya): The name spikes exactly
+at the red line, signaling a highly concentrated generation of children
+with this name hitting your target toddler-to-youth toy market
+simultaneously.
+
+\section{Genres}\label{genres}
+
+\pandocbounded{\includegraphics[keepaspectratio]{baby_names_pdf_files/figure-latex/unnamed-chunk-4-1.pdf}}
+
+High-Yield Toy Lines (Drama \& Comedy): Shows categorized under Drama
+(27 spikes) and Comedy (20 spikes) are your most fertile ground for
+long-term IP licensing. Characters in these genres successfully capture
+deep consumer attachment, driving parents to name their children after
+them.
+
+Low-Yield Genre Risks (Family, Sci-Fi, Fantasy): Surprisingly,
+traditional toy-driving genres like Family (2) and Fantasy (7) trigger
+fewer historical baby name spikes here. This suggests that while these
+genres sell toys immediately, they don't always inspire the lifelong
+emotional investment required to influence a child's legal name.
+
+\section{Conclusion}\label{conclusion}
+
+We see that pop culture has a massive influence on baby names. Very
+popular name these days are Arya, Khaleesi(from Game of thrones) or
+Zendaya. It is also noted that name persistence has decreased post
+1990s. This means that toy manufactures should not sign as big contracts
+relative to population size compared to before the 1990s
+
+\end{document}
